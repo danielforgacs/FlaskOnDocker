@@ -5,3 +5,9 @@ runapp:
 
 build:
 	@docker-compose build --no-cache
+
+up:
+	@docker-compose up -d
+
+curl:
+	@curl http://127.0.0.1:5000
