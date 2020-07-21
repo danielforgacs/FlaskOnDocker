@@ -1,5 +1,6 @@
 runapp:
 	@export FLASK_APP=project/__init__.py && \
+		export FLASK_DEBUG=1 && \
 		python services/web/manage.py run
 
 build:
