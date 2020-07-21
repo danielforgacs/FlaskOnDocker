@@ -12,3 +12,8 @@ COPY requirements.txt /usr/src/app
 RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
+
+RUN apt update
+RUN apt install -y netcat
+
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
