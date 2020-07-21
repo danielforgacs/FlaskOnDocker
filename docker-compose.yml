@@ -4,8 +4,7 @@ services:
   web:
     build: services/web
     command: python manage.py run -h 0.0.0.0
-    environment:
-      - FLASK_APP=project/__init__.py
+    env_file: .env.dev
     volumes:
       - ./services/web/:/usr/src/app/
     ports:
