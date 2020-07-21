@@ -14,3 +14,6 @@ down:
 
 curl:
 	@curl http://127.0.0.1:5000
+
+psql:
+	@docker-compose exec db psql -U hello_flask -d hello_flask_dev
