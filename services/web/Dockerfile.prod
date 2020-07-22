@@ -1,0 +1,54 @@
+###########
+# BUILDER
+###########
+
+FROM python:3.8.1-slim-buster as builder
+
+WORKDIR /usr/src/app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN apt update && apt install -y --no-install-recommends gcc
+
+COPY requirements.txt .
+
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+
+
+###########
+# FINAL
+###########
+
+FROM python:3.8.1-slim-buster
+
+RUN mkdir -p /home/app
+RUN addgroup --system app && adduser --system --group app
+# !!!:
+# adduser: Warning: The home directory `/home/app' does not belong to the user you are currently creating.
+
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+
+RUN mkdir $APP_HOME
+
+WORKDIR $APP_HOME
+
+RUN apt update && apt install -y --no-install-recommends netcat
+
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+
+RUN python -m pip install -U pip
+RUN pip install --no-cache /wheels/*
+
+COPY entrypoint.prod.sh $APP_HOME
+
+COPY . $APP_HOME
+
+RUN chown -R app:app $APP_HOME
+
+USER app
+
+ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
