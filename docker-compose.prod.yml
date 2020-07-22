@@ -6,12 +6,20 @@ services:
       context: services/web
       dockerfile: Dockerfile.prod
     command: gunicorn --bind 0.0.0.0:5000 manage:app
-    ports:
-      - 5000:5000
+    expose:
+      - 5000
     env_file: .env.prod
     depends_on:
       - db
     image: web
+
+  nginx:
+    build: services/nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+    image: nginx
 
   db:
     image: postgres:12-alpine
