@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -24,7 +24,7 @@ class User(db.Model):
 
 @app.route('/')
 def hello_world():
-    return '<h3>Works.</h3>\n'
+    return jsonify(hello='world')
 
 
 
