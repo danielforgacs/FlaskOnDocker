@@ -24,7 +24,8 @@ class User(db.Model):
 
 @app.route('/')
 def hello_world():
-    return jsonify(hello='world')
+    allusers = User.query.all()
+    return jsonify(hello='world', usercount=len(allusers))
 
 
 
