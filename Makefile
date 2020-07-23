@@ -4,6 +4,17 @@ buildweb:
 runweb:
 	docker run -p 5000:5000 web python manage.py run -h 0.0.0.0
 
+# initdb:
+# 	docker-compose exec web python manage.py create_db
+
+compose:
+	docker-compose build --no-cache
+
+up:
+	docker-compose up
+
+seeddb:
+	docker-compose exec web python manage.py seed_db
 
 
 # runapp:
